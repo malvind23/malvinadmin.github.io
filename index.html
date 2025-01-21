@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
         header {
             background-color: #ff6600;
@@ -17,7 +18,8 @@
             text-align: center;
         }
         .container {
-            padding: 2rem;
+            padding: 1rem;
+            overflow-x: auto;
         }
         table {
             width: 100%;
@@ -37,6 +39,17 @@
         .status-select {
             padding: 0.3rem;
             font-size: 1rem;
+        }
+        @media (max-width: 768px) {
+            table {
+                font-size: 0.9rem;
+            }
+            th, td {
+                padding: 0.3rem;
+            }
+            header {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
@@ -63,7 +76,6 @@
     </div>
 
     <script>
-        // Ambil data pesanan dari LocalStorage
         const adminOrders = document.getElementById('admin-orders');
         const orders = JSON.parse(localStorage.getItem('orders')) || [];
 
@@ -71,10 +83,10 @@
             adminOrders.innerHTML = '';
             orders.forEach((order, index) => {
                 const row = `<tr>
-                    <td>${order.tableNumber}</td>
-                    <td>${order.menu}</td>
-                    <td>${order.quantity}</td>
-                    <td>Rp${order.totalPrice.toLocaleString()}</td>
+                    <td>${order.tableNumber ?? 'N/A'}</td>
+                    <td>${order.menu ?? 'N/A'}</td>
+                    <td>${order.quantity ?? 0}</td>
+                    <td>Rp${(order.totalPrice ?? 0).toLocaleString()}</td>
                     <td>
                         <select class="status-select" onchange="updateStatus(${index}, this.value)">
                             <option value="Menunggu" ${order.status === 'Menunggu' ? 'selected' : ''}>Menunggu</option>
@@ -89,8 +101,8 @@
 
         function updateStatus(index, status) {
             orders[index].status = status;
-            localStorage.setItem('orders', JSON.stringify(orders)); // Simpan perubahan
-            updateAdminOrders(); // Perbarui tampilan
+            localStorage.setItem('orders', JSON.stringify(orders));
+            updateAdminOrders();
         }
 
         updateAdminOrders();
