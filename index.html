@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - Rumah Makan B2 Hokky</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ff6600;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        .container {
+            padding: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 0.5rem;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .status-select {
+            padding: 0.3rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Dashboard Admin - Rumah Makan B2 Hokky</h1>
+    </header>
+    <div class="container">
+        <h2>Daftar Pesanan</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nomor Meja</th>
+                    <th>Menu</th>
+                    <th>Jumlah</th>
+                    <th>Total Harga</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="admin-orders">
+                <!-- Pesanan akan muncul di sini -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Ambil data pesanan dari LocalStorage
+        const adminOrders = document.getElementById('admin-orders');
+        const orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+        function updateAdminOrders() {
+            adminOrders.innerHTML = '';
+            orders.forEach((order, index) => {
+                const row = `<tr>
+                    <td>${order.tableNumber}</td>
+                    <td>${order.menu}</td>
+                    <td>${order.quantity}</td>
+                    <td>Rp${order.totalPrice.toLocaleString()}</td>
+                    <td>
+                        <select class="status-select" onchange="updateStatus(${index}, this.value)">
+                            <option value="Menunggu" ${order.status === 'Menunggu' ? 'selected' : ''}>Menunggu</option>
+                            <option value="Diproses" ${order.status === 'Diproses' ? 'selected' : ''}>Diproses</option>
+                            <option value="Selesai" ${order.status === 'Selesai' ? 'selected' : ''}>Selesai</option>
+                        </select>
+                    </td>
+                </tr>`;
+                adminOrders.innerHTML += row;
+            });
+        }
+
+        function updateStatus(index, status) {
+            orders[index].status = status;
+            localStorage.setItem('orders', JSON.stringify(orders)); // Simpan perubahan
+            updateAdminOrders(); // Perbarui tampilan
+        }
+
+        updateAdminOrders();
+    </script>
+</body>
+</html>
