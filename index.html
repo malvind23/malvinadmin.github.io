@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            line-height: 1.5;
         }
         header {
             background-color: #ff6600;
@@ -19,7 +20,6 @@
         }
         .container {
             padding: 1rem;
-            overflow-x: auto;
         }
         table {
             width: 100%;
@@ -40,15 +40,27 @@
             padding: 0.3rem;
             font-size: 1rem;
         }
+        /* Responsiveness */
         @media (max-width: 768px) {
+            header {
+                font-size: 1.2rem;
+            }
             table {
+                display: block;
+                overflow-x: auto;
                 font-size: 0.9rem;
             }
             th, td {
                 padding: 0.3rem;
+                white-space: nowrap;
             }
-            header {
-                font-size: 1.2rem;
+        }
+        @media (max-width: 480px) {
+            th, td {
+                font-size: 0.8rem;
+            }
+            .status-select {
+                font-size: 0.8rem;
             }
         }
     </style>
